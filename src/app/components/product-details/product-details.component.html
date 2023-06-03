@@ -1,0 +1,20 @@
+<div class="detail-section">
+    <div class="container-fluid">
+
+        <img src="{{ product.imageUrl }}" class="detail-img">
+
+        <h3>{{ product.name }}</h3>
+        <div class="price" style="font-size: 22.5px">{{ product.unitPrice | currency:'EUR' }}</div>
+
+        <button (click)="addToCart()" class="btn-add-to-cart">Add to cart  <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
+
+        <hr>
+        <h4>Description</h4>
+        <p>{{ product.description }}</p>
+
+        <a routerLink="/products" class="mt-5" style="font-weight: bold; color: #303030;">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>  Back to Product List</a>
+
+    </div>
+</div>
+
