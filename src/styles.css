@@ -530,7 +530,9 @@ input.au-input.au-input-xl{
  */
 
 .product-box img {
-    width: 150px;
+    width: 160px;
+    height: 160px;
+    margin-top: 10px;
 }
 
 .items select {
@@ -543,20 +545,33 @@ input.au-input.au-input-xl{
     margin-left: 5px;
 }
 .product-box{
-    margin-bottom:60px
+   box-shadow: 0 15px 15px 0 rgba(0.2,0,0,0.2);
+   transition: 0.5s;
+   width: 100%;
+   height: 90%;
+   text-align: center;
+   border-radius: 20px;
+   margin-bottom: 50px;
+   display: flex;
+   flex-direction: column;
 }
 .price{
     margin:15px 0 0;
+    font-size:17.5px;
     font-weight:800;
     color: black;
 }
 .product-box h1{
-    font-size:18px;
-    border-bottom:1px solid #ccc;
+    font-size:15px;
+    border-top:3.5px solid #ccc; 
+    border-bottom:3.5px solid #ccc;
     padding-bottom:5px;
     font-weight:600;
-    padding-top:12px;
-    margin-bottom:7px
+    padding-top:5px;
+    margin-bottom:7px;
+    background:#ffd700;
+    margin-top: 20px;
+    
 }
 .product-box h2{
     font-size:15px;
@@ -729,11 +744,11 @@ table.table.table-bordered th{
     color: black
 }
 .detail-section{
-    margin-top:60px;
+    margin-top:90px;
 }
 
 .detail-img{
-    width: 30%;
+    width: 25%;
 }
 
 
@@ -847,6 +862,7 @@ a.primary-btn:hover{
     -moz-border-radius:3px;
     border-radius:10px;
     background: #ffd700;
+    
 }
 
 .btn-add-to-cart:hover {
@@ -854,7 +870,7 @@ a.primary-btn:hover{
 }
 
 .btn-add-to-cart-list {
-    min-width: 130px;
+    width: 160px;
     height: 40px;
     color: whitesmoke;
     font-weight: bold;
@@ -863,6 +879,10 @@ a.primary-btn:hover{
     -moz-border-radius:3px;
     border-radius:10px;
     background: #363945;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    
 }
 
 .btn-add-to-cart-list:hover {
@@ -957,7 +977,7 @@ footer ul li{
         font-size:22px;
         float:left;
         margin-top:16px;
-        color:#205b8d;
+        color:#cc9900;
         margin-left:15px
     }
     .header-mobile .header-mobile-bar{
@@ -988,7 +1008,7 @@ footer ul li{
         padding-bottom:100px
     }
      .cart-area.d-n{
-        display:none
+        display:none;
     }
     .form-header{
         -webkit-box-pack:center;
@@ -1110,7 +1130,7 @@ footer ul li{
         text-align:center;
     }
     .product-box{
-        text-align:centerg
+        text-align:center;
     }
     .page-container{
         position:relative;
