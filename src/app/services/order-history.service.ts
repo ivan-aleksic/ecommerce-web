@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OrderHistory } from '../common/order-history';
+import { API_URL } from '../common/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderHistoryService {
 
-  private orderUrl = 'https://football-shop-api.site.quack-lab.dev/api/orders';
+  private orderUrl = `${API_URL}/api/orders`;
 
   constructor(private httpClient: HttpClient) { }
 

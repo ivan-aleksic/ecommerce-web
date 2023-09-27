@@ -8,8 +8,6 @@ import { ProductService } from 'src/app/services/product.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-grid.component.html',
-  //templateUrl: './product-list-table.component.html',
-  //templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
@@ -24,8 +22,8 @@ export class ProductListComponent implements OnInit {
   theTotalElements: number = 0;
 
   previousKeyword: string = null;
-  
-  constructor(private productService: ProductService, 
+
+  constructor(private productService: ProductService,
               private cartService: CartService,
               private route: ActivatedRoute) { }
 
@@ -92,11 +90,11 @@ export class ProductListComponent implements OnInit {
 
     console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
 
-    // get the products for the given category id 
+    // get the products for the given category id
     this.productService.getProductListPaginate(this.thePageNumber - 1,
                                                this.thePageSize,
                                                this.currentCategoryId)
-                                               .subscribe(this.processResult());                                             
+                                               .subscribe(this.processResult());
   }
 
   processResult() {

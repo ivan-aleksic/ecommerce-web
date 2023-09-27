@@ -4,14 +4,15 @@ import { Observable, of } from 'rxjs';
 import { Country } from '../common/country';
 import { map } from 'rxjs/operators';
 import { State } from '../common/state';
+import { API_URL } from '../common/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebShopFormService {
 
-  private countriesUrl = 'https://football-shop-api.site.quack-lab.dev/api/countries';
-  private statesUrl = 'https://football-shop-api.site.quack-lab.dev/api/states';
+  private countriesUrl = `${API_URL}/countries`;
+  private statesUrl = `${API_URL}/states`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -33,7 +34,7 @@ export class WebShopFormService {
   }
 
   getCreditCardMonths(startMonth: number): Observable<number[]> {
-    
+
     // declaring an empty array
     let data: number[] = [];
 
@@ -48,11 +49,11 @@ export class WebShopFormService {
   }
 
   getCreditCardYears(): Observable<number[]> {
-    
+
     let data: number[] = [];
 
     // build an array for "Year" downlist list
-    // - start at current year and loop for next 10 years 
+    // - start at current year and loop for next 10 years
 
     const startYear: number = new Date().getFullYear();
     const endYear: number = startYear + 10;
@@ -63,7 +64,7 @@ export class WebShopFormService {
 
     return of(data);
   }
-  
+
 }
 
 interface GetResponseCountries {
