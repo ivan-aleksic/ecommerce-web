@@ -4,28 +4,29 @@ import { Product } from '../common/product';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { ProductCategory } from '../common/product-category';
+import { API_URL } from '../common/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  
-  private baseUrl = 'https://football-shop-api.site.quack-lab.dev/api/products';
 
-  private categoryUrl = 'https://football-shop-api.site.quack-lab.dev/api/product-category';
-  
+  private baseUrl = `${API_URL}/products`;
+
+  private categoryUrl = `${API_URL}/product-category`;
+
   constructor(private httpClient: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {
 
     //need to build URL based on product id
     const productUrl = `${this.baseUrl}/${theProductId}`;
-   
+
     return this.httpClient.get<Product>(productUrl);
   }
 
-  getProductListPaginate(thePage: number, 
-                         thePageSize: number, 
+  getProductListPaginate(thePage: number,
+                         thePageSize: number,
                          theCategoryId: number): Observable<GetResponseProducts> {
 
     // need to build URL based on category id, page and size
@@ -51,8 +52,8 @@ searchProducts(theKeyword: string): Observable<Product[]> {
   return this.getProducts(searchUrl);
 }
 
-searchProductsPaginate(thePage: number, 
-                       thePageSize: number, 
+searchProductsPaginate(thePage: number,
+                       thePageSize: number,
                        theKeyword: string): Observable<GetResponseProducts> {
 
   // need to build URL based on keyword, page and size
@@ -69,7 +70,7 @@ searchProductsPaginate(thePage: number,
   }
 
   getProductCategories(): Observable<ProductCategory[]> {
-    
+
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response._embedded.productCategory)
     );
@@ -78,7 +79,7 @@ searchProductsPaginate(thePage: number,
 
 interface GetResponseProducts {
   _embedded: {
-    products: Product[]; 
+    products: Product[];
   },
   page: {
     size: number,

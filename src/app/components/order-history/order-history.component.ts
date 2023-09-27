@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderHistoryService } from '../../services/order-history.service';
 import { OrderHistory } from '../../common/order-history';
+import { getUser } from 'src/app/common/common';
 
 @Component({
   selector: 'app-order-history',
@@ -11,7 +12,6 @@ export class OrderHistoryComponent implements OnInit {
 
   // array of OrderHistory items
   orderHistoryList: OrderHistory[] = [];
-  storage: Storage = sessionStorage;
   
   constructor(private orderHistoryService: OrderHistoryService) { }
 
@@ -20,16 +20,16 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   handleOrderHistory() {
-    
-    // reading the user's email address from browser storage
-    const theEmail = JSON.parse(this.storage.getItem('userEmail'));
-
-    // retrieve data from the service
-    this.orderHistoryService.getOrderHistory(theEmail).subscribe(
-      data => {
-        this.orderHistoryList = data._embedded.orders;
+    getUser().then(user => {
+      if (!user) {
+        return;
       }
-    );
+      this.orderHistoryService.getOrderHistory(user.email).subscribe(
+        data => {
+          this.orderHistoryList = data._embedded.orders;
+        }
+      );
+    });
   }
 
 }

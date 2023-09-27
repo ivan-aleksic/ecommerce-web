@@ -19,37 +19,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
 
-import {
-   OKTA_CONFIG,
-   OktaAuthModule,
-   OktaCallbackComponent, 
-   OktaAuthGuard
-} from '@okta/okta-angular';
+import { FormsModule } from '@angular/forms'; 
 
 import myAppConfig from './config/my-app-config';
-import { OktaAuth } from '@okta/okta-auth-js';
 import { MembersPageComponent } from './components/members-page/members-page.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
-import { AuthInterceptorService } from './services/auth-interceptor.service';
 
-
-const oktaConfig = Object.assign({
-  onAuthRequired: (oktaAuth, injector) => {
-    const router = injector.get(Router);
-
-    // Redirect the user to your custom login page
-    router.navigate(['/login']);
-  }
-}, myAppConfig.oidc);
-
-//const oktaAuth = new OktaAuth(oktaConfig);
-const oktaAuth = new OktaAuth(myAppConfig.oidc);
 
 const routes: Routes = [
-  {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
-  {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},
+  {path: 'order-history', component: OrderHistoryComponent},
+  {path: 'members', component: MembersPageComponent},
 
-  {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
 
   {path: 'checkout', component: CheckoutComponent},
@@ -84,14 +64,9 @@ const routes: Routes = [
     HttpClientModule,
     NgbModule,
     ReactiveFormsModule,
-    OktaAuthModule
+    FormsModule
   ],
-  providers: [ProductService, {provide: OKTA_CONFIG, useValue: {oktaAuth}}, 
-              {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
-  
-              // HTTP_INTERCEPTORS = Token for HTTP interceptors
-              // AuthInterceptorService = Register AuthInterceptorService as an HTTP interceptor
-              
+  providers: [ProductService],              
   bootstrap: [AppComponent]
 })
 export class AppModule { }

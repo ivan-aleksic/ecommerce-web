@@ -1,54 +1,67 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { OktaAuthStateService } from '@okta/okta-angular';
-import { OKTA_AUTH } from '@okta/okta-angular';
-import { OktaAuth } from '@okta/okta-auth-js';
-import OktaSignIn from '@okta/okta-signin-widget';
-
-import myAppConfig from '../../config/my-app-config';
+import { Component } from '@angular/core';
+import { API_URL } from 'src/app/common/common';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent {
+	DEFAULT_HEADERS = {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json',
+		'Accept-Encoding': 'gzip, deflate, br',
+	}
+	GET_OPTIONS = {
+		method: 'GET',
+		headers: this.DEFAULT_HEADERS,
+	}
+	POST_OPTIONS = {
+		method: 'POST',
+		headers: this.DEFAULT_HEADERS,
+	}
 
-  oktaSignin: any;
+	username: string = '';
+	email: string = '';
+	password: string = '';
 
-  constructor(private oktaAuthService: OktaAuthStateService, @Inject(OKTA_AUTH)
-  private oktaAuth: OktaAuth) { 
-    
-    this.oktaSignin = new OktaSignIn({
-      logo: 'assets/images/logo.png',
-      baseUrl: myAppConfig.oidc.issuer.split('/oauth2')[0],
-      clientId: myAppConfig.oidc.clientId,
-      redirectUri: myAppConfig.oidc.redirectUri,
-      authParams: {
-        pkce: true, // Proof Key for Code Exchange
-        issuer: myAppConfig.oidc.issuer,
-        scopes: myAppConfig.oidc.scopes
-      }
-    });
-  }
+	async doSignUp() {
+		const url = `${API_URL}/user/register`;
+		const data = {
+			username: this.username,
+			email: this.email,
+			password: this.password
+		};
 
-  ngOnInit(): void {
-    this.oktaSignin.remove();
+		const res = await fetch(url, {
+			...this.POST_OPTIONS,
+			body: JSON.stringify(data)
+		});
+		if (res.status !== 200) {
+			// Registration failed
+			return;
+		}
+		const returnData = await res.text();
 
-    this.oktaSignin.renderEl({
-      el:'#okta-sign-in-widget'}, // name should be same as div tag in login.component.html
-      (response)=>{
-        if(response.status === 'SUCCESS'){
-          this.oktaAuth.signInWithRedirect();
-        }
-      },
-      (error) => {
-        throw error;
-      }
-    );
-  }
+		let cookieExpiry = new Date();
+		cookieExpiry.setHours(cookieExpiry.getHours() + 1);
+		document.cookie = `user=${returnData}; expires=${cookieExpiry.toUTCString()}`;
+		window.location.href = '/';
+	}
 
-  ngOnDestroy(): void {
-    this.oktaSignin.remove();
-  }
+	async doLogin() {
+		const url = `${API_URL}/user/login?email=${this.email}&password=${this.password}`;
 
+		const res = await fetch(url, this.GET_OPTIONS);
+		if (res.status !== 200) {
+			// Authentication failed
+			return;
+		}
+		const returnData = await res.text();
+
+		let cookieExpiry = new Date();
+		cookieExpiry.setHours(cookieExpiry.getHours() + 1);
+		document.cookie = `user=${returnData}; expires=${cookieExpiry.toUTCString()}`;
+		window.location.href = '/';
+	}
 }
